@@ -44,13 +44,14 @@ As suggested by taiga these are :
 2.3 Update `~/.bashrc` so that postgres tools are in the path. Append the following code to `~/.bashrc`
 
 ```
+export HOME=/home/pcoder1
 export PATH=$HOME/opt/postgresql/bin/:$PATH
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/opt/postgresql/lib
 export PGPASSFILE=$HOME/.pgpass
 ```
 
 ```
-[taiga@dysnomia ~]$ source ~/.bash_profile
+[taiga@dysnomia ~]$ source ~/.bashrc
 [taiga@dysnomia ~]$ psql --version
 psql (PostgreSQL) 9.6.10
 ```
