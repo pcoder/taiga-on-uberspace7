@@ -25,21 +25,21 @@ As suggested by taiga these are :
 
 2.1 Download and extract the source code
 ```
-[isabell@stardust ~]$ mkdir ~/postgres/
-[isabell@stardust ~]$ cd ~/postgres/
-[isabell@stardust ~]$ curl -O https://download.postgresql.org/pub/source/v9.6.10/postgresql-9.6.10.tar.gz
-[isabell@stardust ~]$ tar -xvzf ~/postgres/postgresql-9.6.10.tar.gz
-[isabell@stardust ~]$
+[taiga@dysnomia ~]$ mkdir ~/postgres/
+[taiga@dysnomia ~]$ cd ~/postgres/
+[taiga@dysnomia ~]$ curl -O https://download.postgresql.org/pub/source/v9.6.10/postgresql-9.6.10.tar.gz
+[taiga@dysnomia ~]$ tar -xvzf ~/postgres/postgresql-9.6.10.tar.gz
+[taiga@dysnomia ~]$
 ```
 
 2.2 Source Code Configuration, Compiling and Installation
 
 ```
-[isabell@stardust ~]$ cd ~/postgres/postgresql-9.6.10
-[isabell@stardust ~]$ ./configure --prefix=$HOME/opt/postgresql/ --with-python PYTHON=/usr/bin/python3.6 --without-readline
-[isabell@stardust ~]$ make world
-[isabell@stardust ~]$ make install-world
-[isabell@stardust ~]$
+[taiga@dysnomia ~]$ cd ~/postgres/postgresql-9.6.10
+[taiga@dysnomia ~]$ ./configure --prefix=$HOME/opt/postgresql/ --with-python PYTHON=/usr/bin/python3.6 --without-readline
+[taiga@dysnomia ~]$ make world
+[taiga@dysnomia ~]$ make install-world
+[taiga@dysnomia ~]$
 ```
 2.3 Update `~/.bashrc` so that postgres tools are in the path. Append the following code to `~/.bashrc`
 
@@ -50,8 +50,8 @@ export PGPASSFILE=$HOME/.pgpass
 ```
 
 ```
-[isabell@stardust ~]$ source ~/.bash_profile
-[isabell@stardust ~]$ psql --version
+[taiga@dysnomia ~]$ source ~/.bash_profile
+[taiga@dysnomia ~]$ psql --version
 psql (PostgreSQL) 9.6.10
 ```
 
@@ -66,21 +66,21 @@ psql (PostgreSQL) 9.6.10
 2.4.2
 
 ```
- [isabell@stardust ~]$ chmod 0600 ~/.pgpass
- [isabell@stardust ~]$ cp ~/.pgpass ~/pgpass.temp
- [isabell@stardust ~]$ cat ~/pgpass.temp
+ [taiga@dysnomia ~]$ chmod 0600 ~/.pgpass
+ [taiga@dysnomia ~]$ cp ~/.pgpass ~/pgpass.temp
+ [taiga@dysnomia ~]$ cat ~/pgpass.temp
 ```
 2.4.3 Edit the pgpass.temp file to contain only the password
 
 ```
-[isabell@stardust ~]$ cat ~/pgpass.temp
+[taiga@dysnomia ~]$ cat ~/pgpass.temp
 1234567890123456789012345678901234567890123456789012345678901234
 
 ```
 2.4.4 Initialize DB
 
 ```
-[isabell@stardust ~]$ initdb --pwfile="/home/taiga/pgpass.temp" --auth=md5 -E UTF8 -D ~/opt/postgresql/data/
+[taiga@dysnomia ~]$ initdb --pwfile="/home/taiga/pgpass.temp" --auth=md5 -E UTF8 -D ~/opt/postgresql/data/
 
 
 The files belonging to this database system will be owned by user "taiga".
@@ -109,13 +109,13 @@ Success. You can now start the database server using:
 2.4.5 Remove unused `~/pgpass.temp`
 
 ```
- [isabell@stardust ~]$ rm ~/pgpass.temp
+ [taiga@dysnomia ~]$ rm ~/pgpass.temp
 ```
 
 2.4.6 Obtain a free port to be used for DB port number
 
 ```
-[isabell@stardust ~]$ FREEPORT=$(( $RANDOM % 4535 + 61000 )); ss -ln src :$FREEPORT | grep $FREEPORT && echo "try again" || echo $FREEPORT
+[taiga@dysnomia ~]$ FREEPORT=$(( $RANDOM % 4535 + 61000 )); ss -ln src :$FREEPORT | grep $FREEPORT && echo "try again" || echo $FREEPORT
 ```
 63921 => this is the DB port that I took for the database
 
@@ -177,21 +177,21 @@ autorestart=yes
 
 ::
 
-[isabell@stardust ~]$ supervisorctl reread
+[taiga@dysnomia ~]$ supervisorctl reread
 postgresql: available
-[isabell@stardust ~]$
-[isabell@stardust ~]$ supervisorctl update
-[isabell@stardust ~]$
-[isabell@stardust ~]$ supervisorctl status
+[taiga@dysnomia ~]$
+[taiga@dysnomia ~]$ supervisorctl update
+[taiga@dysnomia ~]$
+[taiga@dysnomia ~]$ supervisorctl status
 postgresql                       RUNNING   pid 15477, uptime 0:00:07
-[isabell@stardust ~]$
+[taiga@dysnomia ~]$
 
 2.4.11 Create user and datbase
 
 ::
 
-[isabell@stardust ~]$ createuser -h localhost -p 63921 taiga
-[isabell@stardust ~]$ createdb -h localhost -p 63921  taiga -O taiga --encoding='utf-8' --locale=en_US.utf8 --template=template0
+[taiga@dysnomia ~]$ createuser -h localhost -p 63921 taiga
+[taiga@dysnomia ~]$ createdb -h localhost -p 63921  taiga -O taiga --encoding='utf-8' --locale=en_US.utf8 --template=template0
 
 
 ### 3. Setup python and Django
@@ -202,17 +202,17 @@ why pip3.6 ?? Because we've use /usr/bin/python3 during installation of postgres
 
 ::
 
-[isabell@stardust ~]$ pip3.6 install virtualenvwrapper --user
-[isabell@stardust ~]$ source ~/.local/bin/virtualenvwrapper_lazy.sh
-[isabell@stardust ~]$ mkvirtualenv -p /usr/bin/python3.6 taiga
+[taiga@dysnomia ~]$ pip3.6 install virtualenvwrapper --user
+[taiga@dysnomia ~]$ source ~/.local/bin/virtualenvwrapper_lazy.sh
+[taiga@dysnomia ~]$ mkvirtualenv -p /usr/bin/python3.6 taiga
 
 
 .. code-block:: console
 
-[isabell@stardust ~]$ git clone https://github.com/taigaio/taiga-back.git taiga-back
-[isabell@stardust ~]$ cd taiga-back
-[isabell@stardust taiga-back]$ git checkout stable
-[isabell@stardust taiga-back]$ pip3.6 install -r requirements.txt
+[taiga@dysnomia ~]$ git clone https://github.com/taigaio/taiga-back.git taiga-back
+[taiga@dysnomia ~]$ cd taiga-back
+[taiga@dysnomia taiga-back]$ git checkout stable
+[taiga@dysnomia taiga-back]$ pip3.6 install -r requirements.txt
 
 .. code-block:: bash
 export PYTHONPATH=$HOME/.virtualenvs/taiga/lib/python3.6/site-packages
@@ -220,11 +220,11 @@ export PYTHONPATH=$HOME/.virtualenvs/taiga/lib/python3.6/site-packages
 3.2 Do database migration
 
 .. code-block:: bash
-(taiga) [isabell@stardust taiga-back]$ python manage.py migrate --noinput
-(taiga) [isabell@stardust taiga-back]$ python manage.py loaddata initial_user
-(taiga) [isabell@stardust taiga-back]$ python manage.py loaddata initial_project_templates
-(taiga) [isabell@stardust taiga-back]$ python manage.py loaddata initial_role
-(taiga) [isabell@stardust taiga-back]$ python manage.py collectstatic --noinput
+(taiga) [taiga@dysnomia taiga-back]$ python manage.py migrate --noinput
+(taiga) [taiga@dysnomia taiga-back]$ python manage.py loaddata initial_user
+(taiga) [taiga@dysnomia taiga-back]$ python manage.py loaddata initial_project_templates
+(taiga) [taiga@dysnomia taiga-back]$ python manage.py loaddata initial_role
+(taiga) [taiga@dysnomia taiga-back]$ python manage.py collectstatic --noinput
 
 
 Ignore this error:
@@ -237,7 +237,7 @@ CommandError: No fixture named 'initial_role' found.
 3.3 Test if Django installation works
 
 ```
-(taiga) [isabell@stardust taiga-back]$ python manage.py runserver
+(taiga) [taiga@dysnomia taiga-back]$ python manage.py runserver
 ```
 
 
@@ -602,23 +602,23 @@ stopsignal=INT
 5.3 Create needed folders
 
 ```
-[isabell@stardust ~]$ mkdir -p ~/uwsgi/apps-enabled
-[isabell@stardust ~]$ touch ~/uwsgi/err.log
-[isabell@stardust ~]$ touch ~/uwsgi/out.log
-[isabell@stardust ~]$
+[taiga@dysnomia ~]$ mkdir -p ~/uwsgi/apps-enabled
+[taiga@dysnomia ~]$ touch ~/uwsgi/err.log
+[taiga@dysnomia ~]$ touch ~/uwsgi/out.log
+[taiga@dysnomia ~]$
 
 ```
 
 5.4 Tell supervisord to refresh its configuration and start the service:
 
 ```
-[isabell@stardust ~]$ supervisorctl reread
+[taiga@dysnomia ~]$ supervisorctl reread
 uwsgi: available
-[isabell@stardust ~]$ supervisorctl update
+[taiga@dysnomia ~]$ supervisorctl update
 uwsgi: added process group
-[isabell@stardust ~]$ supervisorctl status
+[taiga@dysnomia ~]$ supervisorctl status
 uwsgi                            RUNNING   pid 26020, uptime 0:03:14
-[isabell@stardust ~]$
+[taiga@dysnomia ~]$
 ```
 
 5.5 Modify `ALLOWED_HOSTS` in django
