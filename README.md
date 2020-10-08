@@ -1,8 +1,5 @@
-References:
-1. https://gist.github.com/shuairan/160015f071ef080e841d
-2. http://taigaio.github.io/taiga-doc/dist/setup-production.html
-3. https://github.com/HepHepHurra/Taiga-on-Uberspace
-4. https://github.com/Uberspace/lab/blob/fba013054549ab3f9ebc00e46217f06bc618a41e/source/guide_postgresql.rst
+# How to install taiga on uberspace 7
+
 
 ## Steps:
 ---------
@@ -656,3 +653,10 @@ plugin = python
 uid = <username>
 gid = <username>
 ```
+
+
+References:
+1. https://gist.github.com/shuairan/160015f071ef080e841d
+2. http://taigaio.github.io/taiga-doc/dist/setup-production.html
+3. https://github.com/HepHepHurra/Taiga-on-Uberspace
+4. https://github.com/Uberspace/lab/blob/fba013054549ab3f9ebc00e46217f06bc618a41e/source/guide_postgresql.rst
