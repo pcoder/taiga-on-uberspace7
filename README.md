@@ -124,7 +124,7 @@ Success. You can now start the database server using:
 
 ```
  export PGHOST=localhost
- export PGPORT=9000
+ export PGPORT=63921
 ```
 
 2.4.8  Edit ``~/opt/postgresql/data/postgresql.conf`` and set the key values ``listen_adresses``, ``port`` and ``unix_socket_directories``:
@@ -144,7 +144,7 @@ Success. You can now start the database server using:
                                         # comma-separated list of addresses;
                                         # defaults to 'localhost'; use '*' for all
                                         # (change requires restart)
- port = 9000                            # (change requires restart)
+ port = 63921                            # (change requires restart)
  max_connections = 100                  # (change requires restart)
  #superuser_reserved_connections = 3    # (change requires restart)
  unix_socket_directories = '/home/<username>/tmp'      # comma-separated list of directories
