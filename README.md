@@ -129,11 +129,9 @@ Success. You can now start the database server using:
 
 2.4.8  Edit ``~/opt/postgresql/data/postgresql.conf`` and set the key values ``listen_adresses``, ``port`` and ``unix_socket_directories``:
 
-.. warning:: Replace the port number with the one you wrote down earlier and replace ``<username>`` with your username!
+`Replace the port number with the one you wrote down earlier and replace ``<username>`` with your username!`
 
-.. code-block:: postgres
- :emphasize-lines: 7,11,14
-
+```
  #------------------------------------------------------------------------------
  # CONNECTIONS AND AUTHENTICATION
  #------------------------------------------------------------------------------
@@ -156,7 +154,7 @@ Success. You can now start the database server using:
                                         # (change requires restart)
  #bonjour_name = ''                     # defaults to the computer name
                                         # (change requires restart)
-
+```
 
 2.4.9 Setup service
 
@@ -176,8 +174,7 @@ autorestart=yes
 
 2.4.10 Update supervisor
 
-::
-
+```
 [taiga@dysnomia ~]$ supervisorctl reread
 postgresql: available
 [taiga@dysnomia ~]$
@@ -186,14 +183,14 @@ postgresql: available
 [taiga@dysnomia ~]$ supervisorctl status
 postgresql                       RUNNING   pid 15477, uptime 0:00:07
 [taiga@dysnomia ~]$
+```
 
 2.4.11 Create user and datbase
 
-::
-
+```
 [taiga@dysnomia ~]$ createuser -h localhost -p 63921 taiga
 [taiga@dysnomia ~]$ createdb -h localhost -p 63921  taiga -O taiga --encoding='utf-8' --locale=en_US.utf8 --template=template0
-
+```
 
 ### 3. Setup python and Django
 
@@ -201,40 +198,34 @@ why pip3.6 ?? Because we've use /usr/bin/python3 during installation of postgres
 
 3.1 Create virtualenv and install requirements
 
-::
-
+```
 [taiga@dysnomia ~]$ pip3.6 install virtualenvwrapper --user
 [taiga@dysnomia ~]$ source ~/.local/bin/virtualenvwrapper_lazy.sh
 [taiga@dysnomia ~]$ mkvirtualenv -p /usr/bin/python3.6 taiga
+```
 
 
-.. code-block:: console
-
+```
 [taiga@dysnomia ~]$ git clone https://github.com/taigaio/taiga-back.git taiga-back
 [taiga@dysnomia ~]$ cd taiga-back
 [taiga@dysnomia taiga-back]$ git checkout stable
 [taiga@dysnomia taiga-back]$ pip3.6 install -r requirements.txt
+```
 
-.. code-block:: bash
+```
 export PYTHONPATH=$HOME/.virtualenvs/taiga/lib/python3.6/site-packages
+```
 
 3.2 Do database migration
 
-.. code-block:: bash
+```
 (taiga) [taiga@dysnomia taiga-back]$ python manage.py migrate --noinput
 (taiga) [taiga@dysnomia taiga-back]$ python manage.py loaddata initial_user
 (taiga) [taiga@dysnomia taiga-back]$ python manage.py loaddata initial_project_templates
-(taiga) [taiga@dysnomia taiga-back]$ python manage.py loaddata initial_role
 (taiga) [taiga@dysnomia taiga-back]$ python manage.py collectstatic --noinput
+```
 
 
-Ignore this error:
-```
-(taiga) [taiga@dysnomia taiga-back]$ python manage.py loaddata initial_role
-Trying import local.py settings...
-Trying import development.py settings...
-CommandError: No fixture named 'initial_role' found.
-```
 3.3 Test if Django installation works
 
 ```
