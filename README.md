@@ -126,7 +126,10 @@ Success. You can now start the database server using:
  export PGHOST=localhost
  export PGPORT=63921
 ```
-
+and then load the updated `~/.bashrc` by
+```
+[taiga@dysnomia ~]$ source ~/.bashrc
+```
 2.4.8  Edit ``~/opt/postgresql/data/postgresql.conf`` and set the key values ``listen_adresses``, ``port`` and ``unix_socket_directories``:
 
 `Replace the port number with the one you wrote down earlier and replace ``<username>`` with your username!`
