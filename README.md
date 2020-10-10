@@ -587,7 +587,7 @@ RewriteRule ^ index.html [L]
 4.14 Finally good to run the server and test it in the browser
 
 ```
-python manage.py runserver 100.64.86.2:63976
+(taiga) [taiga@dysnomia taiga-back]$ python manage.py runserver 100.64.86.2:63976
 ```
 
 open the url in browser https://taiga.uber.space
