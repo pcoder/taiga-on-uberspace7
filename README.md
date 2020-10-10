@@ -207,14 +207,35 @@ why pip3.6 ?? Because we've use /usr/bin/python3 during installation of postgres
 [taiga@dysnomia ~]$ mkvirtualenv -p /usr/bin/python3.6 taiga
 ```
 
-
+3.1.1 Load the virtualenv
 ```
-[taiga@dysnomia ~]$ git clone https://github.com/taigaio/taiga-back.git taiga-back
-[taiga@dysnomia ~]$ cd taiga-back
-[taiga@dysnomia taiga-back]$ git checkout stable
-[taiga@dysnomia taiga-back]$ pip3.6 install -r requirements.txt
+[taiga@dysnomia ~]$ source ~/.virtualenvs/taiga/bin/activate
+(taiga) [pcoder1@erriapus ~]$ 
+```
+When you execute above step, you should see the env name `(taiga)` within parenthesis at the front of the shell identifier `(taiga) [pcoder1@erriapus ~]$`
+
+3.1.2 Test the virutalenv
+```
+(taiga) [pcoder1@dysnomia ~]$ python
+Python 3.6.8 (default, Apr  2 2020, 13:34:55) 
+[GCC 4.8.5 20150623 (Red Hat 4.8.5-39)] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> 
 ```
 
+The python command should take you into python interpreter with the version `3.6.8`. Take note of the version. It should be `3.6.8`. If it is something else, there may be a mistake and you would need to repeat above steps and recontact me.
+
+To get out of the interpreter, type `Ctrl D`
+
+3.1.3 Download `taiga-back` and install requirements.
+```
+(taiga) [taiga@dysnomia ~]$ git clone https://github.com/taigaio/taiga-back.git taiga-back
+(taiga) [taiga@dysnomia ~]$ cd taiga-back
+(taiga) [taiga@dysnomia taiga-back]$ git checkout stable
+(taiga) [taiga@dysnomia taiga-back]$ pip3.6 install -r requirements.txt
+```
+
+3.1.4 Setup `PYTHONPATH`
 ```
 export PYTHONPATH=$HOME/.virtualenvs/taiga/lib/python3.6/site-packages
 ```
@@ -235,6 +256,55 @@ export PYTHONPATH=$HOME/.virtualenvs/taiga/lib/python3.6/site-packages
 (taiga) [taiga@dysnomia taiga-back]$ python manage.py runserver
 ```
 
+#### Notes:
+
+Open the `settings/common.py` file in the taiga-back folder and update the following variables. If they are not there please add.
+
+N1. The email configuration for django
+
+```
+SMTP_AUTH = True
+SMTP_USE_TLS = True
+SMTPHOST = 'dysnomia.uberspace.de'
+SMTPPORT = '587'
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+#EMAIL_USE_TLS = True 
+#EMAIL_USE_SSL = True # You cannot use both (TLS and SSL) at the same time!
+EMAIL_HOST = 'dysnomia.uberspace.de'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'taiga'
+EMAIL_HOST_PASSWORD = 'Uj5646()KJd38KKZre'
+```
+
+N2. Databases
+```
+DATABASES = {
+     "default": {
+         "ENGINE": "django.db.backends.postgresql",
+         "NAME": "taiga",
+         "HOST": "localhost",
+         "PORT": '63921'
+     }
+ }
+
+```
+
+N3. Sites
+```
+ SITES = {
+    "api": {"domain": "localhost:63976", "scheme": "http", "name": "api"},
+    "front": {"domain": "taiga.uber.space", "scheme": "http", "name": "front"},
+ }
+
+```
+N4. Secret key
+
+```
+SECRET_KEY = "aw3+t2r(8(0kiaexuko9Li0ahngienai5reifi3baed3RieB5AeN4ceeceu2eehe0la3pei2ceo2okrhg8)gx6i96v5^kv%6cfep9wxfom0%7dy0m9e"
+
+```
 
 
 ### 4 Install taiga-front
@@ -523,57 +593,6 @@ python manage.py runserver 100.64.86.2:63976
 open the url in browser https://taiga.uber.space
 
 
-#### Notes:
-
-N1. The email configuration for django
-
-```
-SMTP_AUTH = True
-SMTP_USE_TLS = True
-SMTPHOST = 'dysnomia.uberspace.de'
-SMTPPORT = '587'
-
-
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-#EMAIL_USE_TLS = True 
-#EMAIL_USE_SSL = True # You cannot use both (TLS and SSL) at the same time!
-EMAIL_HOST = 'dysnomia.uberspace.de'
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'taiga'
-EMAIL_HOST_PASSWORD = 'Uj5646()KJd38KKZre'
-```
-
-N2. Databases
-```
-DATABASES = {
-     "default": {
-         "ENGINE": "django.db.backends.postgresql",
-         "NAME": "taiga",
-         "HOST": "localhost",
-         "PORT": '63921'
-     }
- }
-
-```
-
-N3. Sites
-```
-DATABASES = {
-     "default": {
-         "ENGINE": "django.db.backends.postgresql",
-         "NAME": "taiga",
-         "HOST": "localhost",
-         "PORT": '63921'
-     }
- }
-
-```
-N4. Secret key
-
-```
-SECRET_KEY = "aw3+t2r(8(0kiaexuko9Li0ahngienai5reifi3baed3RieB5AeN4ceeceu2eehe0la3pei2ceo2okrhg8)gx6i96v5^kv%6cfep9wxfom0%7dy0m9e"
-
-```
 
 References:
 1. https://gist.github.com/shuairan/160015f071ef080e841d
